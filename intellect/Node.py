@@ -78,7 +78,6 @@ class Node(object):
 
         self._file = None
 
-
     def __str__(self):
         '''
         Returns a str for this node and its children for what they represent
@@ -94,22 +93,20 @@ class Node(object):
 
         return value
 
-
     def str_tree(self, text="", indentCount=0):
         '''
         Returns a textual tree representation of the Node and its
         children nodes.  Used for debugging purposes.
         '''
-        text = text + "   "*indentCount + self.__class__.__name__ + "\n"
+        text = text + "   " * indentCount + self.__class__.__name__ + "\n"
 
         for child in self._children:
             if isinstance(child, Node):
                 text += child.str_tree("", indentCount + 1)
             else:
-                text += "   "*(indentCount + 1) + child + "\n"
+                text += "   " * (indentCount + 1) + child + "\n"
 
         return text
-
 
     @property
     def children(self):
@@ -119,20 +116,18 @@ class Node(object):
         '''
         return self._children
 
-
     @children.setter
     def children(self, value):
         '''
         Sets the children list for this node.
         '''
         if not isinstance(value, (list, types.NoneType)):
-            raise TypeError, "Parameter 'value' must be a List or NoneType."
+            raise TypeError("Parameter 'value' must be a List or NoneType.")
 
         if value is None:
             value = []
 
         self._children = value
-
 
     def first_child(self):
         '''
@@ -143,7 +138,6 @@ class Node(object):
         else:
             return self.children[0]
 
-
     def append_child(self, child):
         '''
         Appends a child to the node.  The child can be either a basestring
@@ -152,11 +146,11 @@ class Node(object):
 
         # cannot add None
         if not child:
-            raise TypeError, "Parameter 'child' cannot be None."
+            raise TypeError("Parameter 'child' cannot be None.")
 
         # must be either a basestring or Node object
         if not isinstance(child, (basestring, Node)):
-            raise TypeError, "Parameter 'child' must be a basetring or Node."
+            raise TypeError("Parameter 'child' must be a basetring or Node.")
 
         # if children is not yet a list, make it a list object
         if not self.children:
@@ -165,7 +159,6 @@ class Node(object):
         # append the bloody damn child
         self.children.append(child)
 
-
     def append_children(self, children):
         '''
         Append a list of siblings to the node
@@ -173,18 +166,18 @@ class Node(object):
 
         # can't add None
         if not children:
-            raise TypeError, "Parameter 'children' cannot be an empty list."
+            raise TypeError("Parameter 'children' cannot be an empty list.")
 
         # must be a list
         if not isinstance(children, list):
-            raise TypeError, "Parameter 'children' must be a list."
+            raise TypeError("Parameter 'children' must be a list.")
 
         # iterate through the children to be added and
         # verify they are of the correct type, if not
         # raise a TypeError
         for child in children:
             if not isinstance(child, (basestring, Node)):
-                raise TypeError, str(child) + " must be a basetring or Node."
+                raise TypeError(str(child) + " must be a basetring or Node.")
 
         # if children is not yet a list, make it a list object
         if not self.children:
@@ -192,7 +185,6 @@ class Node(object):
 
         # append the bloody damn siblings
         self.children.extend(children)
-
 
     def insert_child_at(self, index, child):
         '''
@@ -206,21 +198,20 @@ class Node(object):
 
         # cann't add None
         if not child:
-            raise TypeError, "Parameter 'child' cannot be None."
+            raise TypeError("Parameter 'child' cannot be None.")
 
         # must be either a basestring or Node object
         if not isinstance(child, (basestring, Node)):
-            raise TypeError, "Parameter 'child' must be a basetring or Node."
+            raise TypeError("Parameter 'child' must be a basetring or Node.")
 
         # if children is not yet a list, make it a list object
         if not self.children:
             self.children = []
 
         if index > len(self.children) or index < 0:
-            raise ValueError, "Parameter 'index' cannot be a value less than 0 or greater than {0}. A value of {1} was passed.".format(len(self.children), index)
+            raise ValueError("Parameter 'index' cannot be a value less than 0 or greater than {0}. A value of {1} was passed.".format(len(self.children), index))
 
         self.children.insert(index, child)
-
 
     def insert_children_at(self, index, children):
         '''
@@ -233,18 +224,18 @@ class Node(object):
 
         # can't add None
         if not children:
-            raise TypeError, "Parameter 'children' cannot be an empty list."
+            raise TypeError("Parameter 'children' cannot be an empty list.")
 
         # must be a list
         if not isinstance(children, list):
-            raise TypeError, "Parameter 'children' must be a list."
+            raise TypeError("Parameter 'children' must be a list.")
 
         # iterate through the children to be added and
         # verify they are of the correct type, if not
         # raise a TypeError
         for child in children:
             if not isinstance(child, (basestring, Node)):
-                raise TypeError, str(child) + " must be a basetring or Node."
+                raise TypeError(str(child) + " must be a basetring or Node.")
 
         # if children is not yet a list, make it a list object
         if not self.children:
@@ -255,7 +246,6 @@ class Node(object):
             self.insert_child_at(index, children)
             index += 1
 
-
     @property
     def line(self):
         '''
@@ -265,7 +255,6 @@ class Node(object):
         Used when raising errors or debugging.
         '''
         return self._line
-
 
     @line.setter
     def line(self, value):
@@ -281,8 +270,7 @@ class Node(object):
         if isinstance(value, (int, types.NoneType)):
             self._line = value
         else:
-            raise TypeError, "Must be an int or NoneType."
-
+            raise TypeError("Must be an int or NoneType.")
 
     @property
     def column(self):
@@ -299,7 +287,6 @@ class Node(object):
         '''
         return self._column
 
-
     @column.setter
     def column(self, value):
         '''
@@ -314,8 +301,7 @@ class Node(object):
         if isinstance(value, (int, types.NoneType)):
             self._column = value
         else:
-            raise TypeError, "Must be an int."
-
+            raise TypeError("Must be an int.")
 
     @property
     def file(self):
@@ -323,7 +309,6 @@ class Node(object):
         Returns the File Node that defines this Node.
         '''
         return self._file
-
 
     @file.setter
     def file(self, value):
@@ -333,13 +318,11 @@ class Node(object):
         if isinstance(value, File):
             self._file = value
         else:
-            raise TypeError, "'file' must be of type File."
-
+            raise TypeError("'file' must be of type File.")
 
     def append_global(self, object_reference, value):
         #print locals()
         self.globals[object_reference] = value
-
 
     def log(self, msg, name="intellect", level=logging.DEBUG):
         '''
@@ -354,10 +337,9 @@ class Node(object):
 
         if level not in [logging.DEBUG, logging.INFO, logging.WARNING,
                 logging.ERROR, logging.CRITICAL]:
-            raise ValueError, "'level' must be either logging.DEBUG, logging.INFO, logging.WARNING, logging.ERROR, logging.CRITICAL"
+            raise ValueError("'level' must be either logging.DEBUG, logging.INFO, logging.WARNING, logging.ERROR, logging.CRITICAL")
 
         logging.getLogger(name).log(level, "{0}.{1} :: {2}".format(self.__class__.__module__, self.__class__.__name__, msg))
-
 
     @staticmethod
     def filter_to_list(type, node, list=None):
@@ -383,7 +365,6 @@ class Node(object):
                 Node.filter_to_list(type, child, list)
 
         return list
-
 
     @staticmethod
     def is_name(string):
@@ -411,7 +392,6 @@ class Node(object):
 
         return True
 
-
     @staticmethod
     def unique_identifier(expressionStr, identifier):
         '''
@@ -431,15 +411,12 @@ class Node(object):
         return collisionProtectedIdentifier
 
 
-
 # S P E C I F I C   N O D E   C L A S S E S
-
 class Policy(Node):
     '''
     A Policy node. The entrant Node for the Policy DSL.
     Meaning: you start here to reason...
     '''
-
 
     def __str__(self):
         '''
@@ -452,7 +429,6 @@ class Policy(Node):
 
         return value
 
-
     def __init__(self, children=None, line=None, column=None):
 
         super(Policy, self).__init__(children, line, column)
@@ -461,14 +437,12 @@ class Policy(Node):
         self._globals = {}
         self._halt = False
 
-
     @property
     def intellect(self):
         '''
         Returns the associated Intellect object executing the policy.
         '''
         return self._intellect
-
 
     @intellect.setter
     def intellect(self, value):
@@ -479,8 +453,7 @@ class Policy(Node):
         if isinstance(value, reflection.class_from_str("intellect.Intellect.Intellect")):
             self._intellect = value
         else:
-            raise TypeError, "'intellect' must be of type Intellect."
-
+            raise TypeError("'intellect' must be of type Intellect.")
 
     @property
     def globals(self):
@@ -491,7 +464,6 @@ class Policy(Node):
         '''
         return self._globals
 
-
     @globals.setter
     def globals(self, value):
         '''
@@ -500,8 +472,7 @@ class Policy(Node):
         if isinstance(value, dict):
             self._globals = value
         else:
-            raise TypeError, "'globals' must be of type dictionary."
-
+            raise TypeError("'globals' must be of type dictionary.")
 
     @property
     def halt(self):
@@ -509,7 +480,6 @@ class Policy(Node):
         Returns the policy's halt flag.
         '''
         return self._halt
-
 
     @halt.setter
     def halt(self, value):
@@ -519,8 +489,7 @@ class Policy(Node):
         if isinstance(value, bool):
             self._halt = value
         else:
-            raise TypeError, "'halt' must be of type bool."
-
+            raise TypeError("'halt' must be of type bool.")
 
     @property
     def files(self):
@@ -532,7 +501,6 @@ class Policy(Node):
         '''
         return self.children
 
-
     @files.setter
     def files(self, value):
         '''
@@ -543,7 +511,6 @@ class Policy(Node):
         '''
         self.children = value
 
-
     @property
     def file_paths(self):
         '''
@@ -553,7 +520,6 @@ class Policy(Node):
         None is returned for file nodes learned from strings.
         '''
         return [file_node.path for file_node in self.files]
-
 
     @property
     def importStmts(self):
@@ -569,7 +535,6 @@ class Policy(Node):
 
         return importStmts
 
-
     @property
     def ruleStmts(self):
         '''
@@ -582,7 +547,6 @@ class Policy(Node):
             ruleStmts.extend(file.ruleStmts)
 
         return ruleStmts
-
 
     @property
     def attributeStmts(self):
@@ -597,7 +561,6 @@ class Policy(Node):
 
         return attributeStmts
 
-
     def eval(self, agenda):
         '''
         Eval the policy
@@ -607,7 +570,7 @@ class Policy(Node):
         self.halt = False
 
         if not isinstance(agenda, (list, types.NoneType)):
-            raise TypeError, "Parameter 'agenda' must be a List or NoneType."
+            raise TypeError("Parameter 'agenda' must be a List or NoneType.")
 
         if not agenda:
             agenda = ["MAIN"]
@@ -621,14 +584,14 @@ class Policy(Node):
                 exec(str(importStmt), self.globals)
             except ImportError as error:
                 exception_type, exception_value, exception_traceback = sys.exc_info()
-                raise ImportError, (error.message + " at line: {0} from policy file: '{1}'".format(importStmt.line, importStmt.file.path), exception_type, exception_value), exception_traceback
+                raise ImportError((error.message + " at line: {0} from policy file: '{1}'".format(importStmt.line, importStmt.file.path), exception_type, exception_value), exception_traceback)
 
         # put the policy attributes into the policy's global namespace
         for attributeStmt in self.attributeStmts:
             # check for issues
             for atom in [atom for atom in Node.filter_to_list(Atom, attributeStmt.expressionStmt.children[0]) if len(atom.children) is 1]:
                 if atom.first_child() in keyword.kwlist:
-                    raise SyntaxError, "invalid syntax:  global '{0}' is a reserved keyword: {1} from policy file: '{2}'.".format(atom.first_child(), attributeStmt.line, atom.file.path)
+                    raise SyntaxError("invalid syntax:  global '{0}' is a reserved keyword: {1} from policy file: '{2}'.".format(atom.first_child(), attributeStmt.line, atom.file.path))
 
             # add globals to the namespace
             self.log("Evaluating: {0}".format(attributeStmt))
@@ -678,7 +641,6 @@ class File(Node):
         '''
         return self._path
 
-
     @path.setter
     def path(self, value):
         '''
@@ -688,8 +650,7 @@ class File(Node):
         if isinstance(value, (basestring, types.NoneType)):
             self._path = value
         else:
-            raise TypeError, "'path' must be of type string or None."
-
+            raise TypeError("'path' must be of type string or None.")
 
     @property
     def importStmts(self):
@@ -699,7 +660,6 @@ class File(Node):
         '''
         return [child.first_child() for child in self.children if isinstance(child.first_child(), ImportStmt)]
 
-
     @property
     def ruleStmts(self):
         '''
@@ -707,7 +667,6 @@ class File(Node):
         one or more RuleStmt objects
         '''
         return [child.first_child() for child in self.children if isinstance(child.first_child(), RuleStmt)]
-
 
     @property
     def attributeStmts(self):
@@ -717,8 +676,6 @@ class File(Node):
         '''
         return [child.first_child() for child in self.children if isinstance(child.first_child(), AttributeStmt)]
 
-
-
     @staticmethod
     def set_file_on_descendants(node=None, file_node=None):
         '''
@@ -727,7 +684,7 @@ class File(Node):
         '''
 
         if not isinstance(node, (Node, types.NoneType)):
-            raise TypeError, "'node' must be of type Node."
+            raise TypeError("'node' must be of type Node.")
 
         node.file = file_node
 
@@ -743,7 +700,6 @@ class Statement(Node):
     '''
 
 
-
 class AttributeStmt(Statement):
     '''
     An AttributeStmt (Attribute Statement) Node for a Policy Node
@@ -755,7 +711,6 @@ class AttributeStmt(Statement):
         Returns the ExpressionStmt object for the global.
         '''
         return self.children[0]
-
 
 
 class RuleStmt(Statement):
@@ -785,7 +740,6 @@ class RuleStmt(Statement):
 
         return value
 
-
     @property
     def id(self):
         '''
@@ -793,14 +747,12 @@ class RuleStmt(Statement):
         '''
         return self.children[1]
 
-
     @property
     def ruleAttributes(self):
         '''
         Returns the RuleAttribute nodes associated with this rule.
         '''
         return [child for child in self.children if isinstance(child, RuleAttribute)]
-
 
     @property
     def agenda_group_id(self):
@@ -818,7 +770,6 @@ class RuleStmt(Statement):
         # otherwise return default
         return "MAIN"
 
-
     @property
     def when(self):
         '''
@@ -832,14 +783,12 @@ class RuleStmt(Statement):
         else:
             return whenChild[0]
 
-
     @property
     def then(self):
         '''
         Returns the mandatory Then node.
         '''
         return [child for child in self.children if isinstance(child, Then)][0]
-
 
     def eval(self, policy):
         '''
@@ -866,12 +815,10 @@ class RuleStmt(Statement):
             self.log("When portion of {0} evaluated false, not firing Then portion".format(self.id))
 
 
-
 class RuleAttribute(Node):
     '''
     A RuleAttribute Node containing an AgendaGroup attribute for a Rule Statement
     '''
-
 
 
 class AgendaGroup(Node):
@@ -887,7 +834,6 @@ class AgendaGroup(Node):
         return self.children[1]
 
 
-
 class When(Node):
     '''
     A When Node for a RuleStmt Node.
@@ -901,7 +847,6 @@ class When(Node):
 
         return value
 
-
     @property
     def ruleCondition(self):
         '''
@@ -914,11 +859,9 @@ class When(Node):
         else:
             return filter[0]
 
-
     @ruleCondition.setter
     def ruleCondition(self, value):
-        raise NotImplementedError, "ruleCondition property cannot be set."
-
+        raise NotImplementedError("ruleCondition property cannot be set.")
 
     def eval(self, policy, ruleStmt):
         '''
@@ -991,7 +934,7 @@ class When(Node):
 
                 except Exception as error:
                     exception_type, exception_value, exception_traceback = sys.exc_info()
-                    raise SyntaxError, ("{0} in rule: '{1}', near line: {2} in policy file: '{3}'".format(error, ruleStmt.id, self.line, self.file.path), exception_type, exception_value), exception_traceback
+                    raise SyntaxError(("{0} in rule: '{1}', near line: {2} in policy file: '{3}'".format(error, ruleStmt.id, self.line, self.file.path), exception_type, exception_value), exception_traceback)
 
                 self.log("The matches found in memory: {0}".format(matches))
             else:
@@ -1041,7 +984,6 @@ class When(Node):
         Result = collections.namedtuple('Result', 'fireThen, matches, objectBinding')
 
         return Result(fireThen=fireThen, matches=matches, objectBinding=objectBinding)
-
 
     @staticmethod
     def rewrite(original, rewritten, klazz):
@@ -1095,7 +1037,6 @@ class When(Node):
         return rewritten
 
 
-
 class Then(Node):
     '''
     A Then node for a RuleStmt Node.
@@ -1112,14 +1053,12 @@ class Then(Node):
 
         return value
 
-
     @property
     def actions(self):
         '''
         Returns a list of one one or more Action objects.
         '''
         return [child for child in self.children if isinstance(child, Action)]
-
 
     def eval(self, policy, ruleStmt, matches, objectBinding):
         '''
@@ -1132,7 +1071,7 @@ class Then(Node):
         # Insert into localScope all of Intellect's methods decorated as callable
         for method_name in [method_name for method_name in dir(policy.intellect) if isinstance(getattr(policy.intellect, method_name), Callable)]:
             if method_name in localScope:
-                raise RuntimeWarning, "'Intellect method {0}' is already in local scope of the Then portion of rule: '{1}', define near line: {2} in policy file: '{3}'.  Consider renaming method.".format(method_name, ruleStmt.id, ruleStmt.line, self.file.path)
+                raise RuntimeWarning("'Intellect method {0}' is already in local scope of the Then portion of rule: '{1}', define near line: {2} in policy file: '{3}'.  Consider renaming method.".format(method_name, ruleStmt.id, ruleStmt.line, self.file.path))
             else:
                 localScope[method_name] = getattr(policy.intellect, method_name)
 
@@ -1170,7 +1109,7 @@ class Then(Node):
                             exec(str(code), policy.globals, localScope)
                         except Exception as error:
                             exception_type, exception_value, exception_traceback = sys.exc_info()
-                            raise SyntaxError, ("{0} in rule: '{1}' at line: {2} in the policy file: '{3}'".format(error, ruleStmt.id, actualAction.line, self.file.path), exception_type, exception_value), exception_traceback
+                            raise SyntaxError(("{0} in rule: '{1}' at line: {2} in the policy file: '{3}'".format(error, ruleStmt.id, actualAction.line, self.file.path), exception_type, exception_value), exception_traceback)
 
                         policy.intellect.learn(localScope["new_fact"])
 
@@ -1191,7 +1130,7 @@ class Then(Node):
                                         exec("value" + " = " + str(Then.rewrite(propertyAssignment.constraint, Constraint(), objectBinding)), policy.globals, localScope)
                                     except Exception as error:
                                         exception_type, exception_value, exception_traceback = sys.exc_info()
-                                        raise SyntaxError, ("{0} in rule: '{1}' near line: {2} in the policy file: '{3}'".format(error, ruleStmt.id, actualAction.line, self.file.path), exception_type, exception_value), exception_traceback
+                                        raise SyntaxError(("{0} in rule: '{1}' near line: {2} in the policy file: '{3}'".format(error, ruleStmt.id, actualAction.line, self.file.path), exception_type, exception_value), exception_traceback)
 
                                     self.log("modifying {0} property {1} with value of {2} with assignment of {3}".format(objectBinding, propertyAssignment, localScope["value"], propertyAssignment.assignment))
 
@@ -1260,7 +1199,7 @@ class Then(Node):
                     # As the ForgetAction acts on a specific match, one cannot
                     # have ForgetAction statements in then-portion of a rule
                     # who's when-portion evaluated on "exists".
-                    raise SyntaxError, "forgetAction cannot exist in then portion as when portion is written for '{0}' at line: {1} in Policy: {2}".format(ruleStmt.id, actualAction.line, self.file.path)
+                    raise SyntaxError("forgetAction cannot exist in then portion as when portion is written for '{0}' at line: {1} in Policy: {2}".format(ruleStmt.id, actualAction.line, self.file.path))
 
                 elif isinstance(actualAction, LearnAction):
 
@@ -1275,7 +1214,7 @@ class Then(Node):
                         exec(str(code), policy.globals, localScope)
                     except Exception as error:
                         exception_value, exception_traceback = sys.exc_info()
-                        raise SyntaxError, ("{0} in rule: '{1}' at line: {2} in the policy file: '{3}'".format(error, ruleStmt.id, actualAction.line, self.file.path), exception_type, exception_value), exception_traceback
+                        raise SyntaxError(("{0} in rule: '{1}' at line: {2} in the policy file: '{3}'".format(error, ruleStmt.id, actualAction.line, self.file.path), exception_type, exception_value), exception_traceback)
 
                     policy.intellect.learn(localScope["new_fact"])
 
@@ -1285,7 +1224,7 @@ class Then(Node):
                     # have ModifyeAction statements in then-portion of a rule
                     # who's when-portion evaluated on "exists".
 
-                    raise SyntaxError, "modifyAction cannot exist in then portion as when portion is written for '{0}' at line: {1} in Policy: {2}".format(ruleStmt.id, actualAction.line, self.file.path())
+                    raise SyntaxError("modifyAction cannot exist in then portion as when portion is written for '{0}' at line: {1} in Policy: {2}".format(ruleStmt.id, actualAction.line, self.file.path()))
                 elif isinstance(actualAction, HaltAction):
 
                     policy.halt = True
@@ -1314,7 +1253,6 @@ class Then(Node):
                     code = str(actualAction)
                     self.execute(policy, ruleStmt, localScope, code)
 
-
     def execute(self, policy, ruleStmt, localScope, code):
         '''
         Executes the code
@@ -1331,8 +1269,7 @@ class Then(Node):
 
         except Exception, error:
             exception_type, exception_value, exception_traceback = sys.exc_info()
-            raise RuntimeError, ("{0} in rule: '{1}' near line: {2} in the policy file: '{3}'".format(error, ruleStmt.id, self.line, self.file.path), exception_type, exception_value), exception_traceback
-
+            raise RuntimeError(("{0} in rule: '{1}' near line: {2} in the policy file: '{3}'".format(error, ruleStmt.id, self.line, self.file.path), exception_type, exception_value), exception_traceback)
 
     @staticmethod
     def rewrite(original, rewritten, objectBinding):
@@ -1380,7 +1317,6 @@ class Then(Node):
         return rewritten
 
 
-
 class Id(Node):
     '''
     A ID Node for a RuleStmt (Rule Statement) of GlobalStmt (Global Statement) Node.
@@ -1395,7 +1331,6 @@ class Id(Node):
         return str(self.first_child()).strip('"')
 
 
-
 class RuleCondition(Node):
     '''
     A RuleCondition node for a RuleStmt node.
@@ -1404,7 +1339,6 @@ class RuleCondition(Node):
     @property
     def notCondition(self):
         return self.first_child()
-
 
 
 class NotCondition(Node):
@@ -1427,14 +1361,12 @@ class NotCondition(Node):
 
         return value
 
-
     @property
     def condition(self):
         '''
         Returns the Condition object
         '''
         return [child for child in self.children if isinstance(child, Condition)][0]
-
 
 
 class Condition(Node):
@@ -1449,14 +1381,12 @@ class Condition(Node):
         '''
         return self.first_child() == "exists"
 
-
     @property
     def classConstraint(self):
         '''
         Returns the ClassConstraint object
         '''
         return [child for child in self.children if isinstance(child, ClassConstraint)][0]
-
 
 
 class ClassConstraint(Node):
@@ -1474,7 +1404,6 @@ class ClassConstraint(Node):
         else:
             return None
 
-
     @property
     def name(self):
         '''
@@ -1484,7 +1413,6 @@ class ClassConstraint(Node):
             return self.children[2]
         else:
             return self.first_child()
-
 
     @property
     def constraint(self):
@@ -1499,7 +1427,6 @@ class ClassConstraint(Node):
             return filter[0]
 
 
-
 class Action(Node):
     '''
     An Action node.
@@ -1512,7 +1439,6 @@ class Action(Node):
 
         return value
 
-
     @property
     def action(self):
         '''
@@ -1522,12 +1448,10 @@ class Action(Node):
         return self.first_child()
 
 
-
 class SimpleStmt(Node):
     '''
     A SimpleStmt node.
     '''
-
 
 
 class PrintStmt(Node):
@@ -1536,12 +1460,10 @@ class PrintStmt(Node):
     '''
 
 
-
 class AttributeAction(Node):
     '''
     An AttributeAction node.
     '''
-
 
     @property
     def expressionStmt(self):
@@ -1549,7 +1471,6 @@ class AttributeAction(Node):
         Returns the ExpressionStmt object for the attribute action.
         '''
         return self.children[1]
-
 
     def write_prepend(self):
         """
@@ -1561,7 +1482,6 @@ class AttributeAction(Node):
             returnStmt += object_reference + ", "
 
         return ("; ").join(returnStmt.rsplit(", ", 1))
-
 
 
 class ForgetAction(Node):
@@ -1576,7 +1496,6 @@ class ForgetAction(Node):
         return self.children[1]
 
 
-
 class LearnAction(Node):
     '''
     An LearnAction node.
@@ -1587,7 +1506,6 @@ class LearnAction(Node):
         Returns the identifier of the object to be learned/inserted
         '''
         return self.children[1]
-
 
     @property
     def argList(self):
@@ -1600,7 +1518,6 @@ class LearnAction(Node):
             return None
         else:
             return filter[0]
-
 
 
 class ModifyAction(Node):
@@ -1619,7 +1536,6 @@ class ModifyAction(Node):
 
         return value
 
-
     @property
     def objectBinding(self):
         '''
@@ -1627,14 +1543,12 @@ class ModifyAction(Node):
         '''
         return self.children[1]
 
-
     @property
     def propertyAssignments(self):
         '''
         Returns a list of PropertyAssignment nodes
         '''
         return [child for child in self.children if isinstance(child, PropertyAssignment)]
-
 
 
 class HaltAction(Node):
@@ -1655,14 +1569,12 @@ class PropertyAssignment(Node):
         '''
         return self.first_child()
 
-
     @property
     def assignment(self):
         '''
         Returns an Assignment object
         '''
         return self.children[1]
-
 
     @property
     def constraint(self):
@@ -1672,19 +1584,16 @@ class PropertyAssignment(Node):
         return self.children[2]
 
 
-
 class ExpressionStmt(Node):
     '''
     An ExpressionStmt node.
     '''
 
 
-
 class Assignment(Node):
     '''
     An Assignment node.
     '''
-
 
 
 class ImportStmt(Node):
@@ -1695,7 +1604,6 @@ class ImportStmt(Node):
     @property
     def importStmt(self):
         return self.first_child()
-
 
 
 class ImportName(Node):
@@ -1711,7 +1619,6 @@ class ImportName(Node):
         return self.children[1]
 
 
-
 class ImportFrom(Node):
     '''
     An ImportFrom node
@@ -1724,14 +1631,12 @@ class ImportFrom(Node):
         '''
         return self.children[1]
 
-
     @property
     def importAsNames(self):
         '''
         returns ImportAsNames object
         '''
         return [child for child in self.children if isinstance(child, ImportAsNames)][0]
-
 
 
 class ImportAsNames(Node):
@@ -1747,7 +1652,6 @@ class ImportAsNames(Node):
         return [child for child in self.children if isinstance(child, ImportAsName)]
 
 
-
 class ImportAsName(Node):
     '''
     An ImportAsName node
@@ -1758,8 +1662,7 @@ class ImportAsName(Node):
         '''
         Returns the source identifier/name of the class
         '''
-        return self.first_child();
-
+        return self.first_child()
 
     @property
     def localName(self):
@@ -1771,7 +1674,6 @@ class ImportAsName(Node):
             return self.children[2]
         else:
             return None
-
 
 
 class DottedAsNames(Node):
@@ -1787,7 +1689,6 @@ class DottedAsNames(Node):
         return [child for child in self.children if isinstance(child, DottedAsName)]
 
 
-
 class DottedAsName(Node):
     '''
     A DottedAsName node.
@@ -1798,8 +1699,7 @@ class DottedAsName(Node):
         '''
         Returns a DottedName object
         '''
-        return self.first_child();
-
+        return self.first_child()
 
     @property
     def localName(self):
@@ -1811,7 +1711,6 @@ class DottedAsName(Node):
             return self.children[2]
         else:
             return None
-
 
 
 class DottedName(Node):
@@ -1826,12 +1725,10 @@ class DottedName(Node):
         return "".join(self.children)
 
 
-
 class Constraint(Node):
     '''
     A Constraint node.
     '''
-
 
 
 class OrConstraint(Node):
@@ -1840,12 +1737,10 @@ class OrConstraint(Node):
     '''
 
 
-
 class AndConstraint(Node):
     '''
     An AndConstraint node.
     '''
-
 
 
 class NotConstraint(Node):
@@ -1854,12 +1749,10 @@ class NotConstraint(Node):
     '''
 
 
-
 class Comparison(Node):
     '''
     A Comparison node.
     '''
-
 
 
 class ComparisonOperation(Node):
@@ -1868,12 +1761,10 @@ class ComparisonOperation(Node):
     '''
 
 
-
 class Expression(Node):
     '''
     An Expression node.
     '''
-
 
 
 class BitwiseOrExpr(Node):
@@ -1882,12 +1773,10 @@ class BitwiseOrExpr(Node):
     '''
 
 
-
 class BitwiseXorExpr(Node):
     '''
     A BitwiseXorExpr node.
     '''
-
 
 
 class BitwiseAndExpr(Node):
@@ -1896,12 +1785,10 @@ class BitwiseAndExpr(Node):
     '''
 
 
-
 class ShiftExpr(Node):
     '''
     A ShiftExpr node.
     '''
-
 
 
 class ArithExpr(Node):
@@ -1910,19 +1797,16 @@ class ArithExpr(Node):
     '''
 
 
-
 class Term(Node):
     '''
     A Term node.
     '''
 
 
-
 class Factor(Node):
     '''
     A Factor node.
     '''
-
 
 
 class Power(Node):
@@ -1942,7 +1826,6 @@ class Power(Node):
 
         return value
 
-
     @property
     def atom(self):
         '''
@@ -1950,14 +1833,12 @@ class Power(Node):
         '''
         return self.first_child()
 
-
     @property
     def trailers(self):
         '''
         Return list of Trailer objects
         '''
         return [child for child in self.children if isinstance(child, Trailer)]
-
 
     @property
     def factor(self):
@@ -1970,7 +1851,6 @@ class Power(Node):
             return None
         else:
             return filter[0]
-
 
 
 class Atom(Node):
@@ -1988,7 +1868,6 @@ class Atom(Node):
             value += str(child)
 
         return value
-
 
 
 class ListMaker(Node):
@@ -2012,7 +1891,6 @@ class ListMaker(Node):
         value = value.rstrip()
 
         return value
-
 
 
 class ComparisonList(Node):
@@ -2039,7 +1917,6 @@ class ComparisonList(Node):
         return value
 
 
-
 class Trailer(Node):
     '''
     A Trailer node.
@@ -2057,19 +1934,16 @@ class Trailer(Node):
         return value
 
 
-
 class ExpressionList(Node):
     '''
     An ExpressionList Node.
     '''
 
 
-
 class DictMaker(Node):
     '''
     A DictMaker node.
     '''
-
 
 
 class ArgumentList(Node):

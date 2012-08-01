@@ -31,22 +31,24 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 '''
 
 import os
-from setuptools import setup, find_packages
+from setuptools import setup
 
 DESCRIPTION = 'A Domain-specific language and Rules Engine for Python'
 
 if os.path.exists("README.rst"):
-  long_description = open(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'README.rst')).read()
+    long_description = open(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'README.rst')).read()
 else:
-  long_description = "See http://pypi.python.org/pypi/Intellect"
+    long_description = "See http://pypi.python.org/pypi/Intellect"
+
 
 def get_version(version_tuple):
     version = '%s.%s' % (version_tuple[0], version_tuple[1])
     if version_tuple[2]:
         version = '%s.%s' % (version, version_tuple[2])
     if version_tuple[3]:
-        version = '%s.%s' % (version, version_tuple[3])        
+        version = '%s.%s' % (version, version_tuple[3])
     return version
+
 
 def fullsplit(path, result=None):
     """
@@ -86,7 +88,9 @@ intellect_dir = 'intellect'
 
 for dirpath, dirnames, filenames in os.walk(intellect_dir):
     for i, dirname in enumerate(dirnames):
-        if dirname.startswith('.'): del dirnames[i]
+        if dirname.startswith('.'):
+            del dirnames[i]
+
     if '__init__.py' in filenames:
         packages.append('.'.join(fullsplit(dirpath)))
     elif filenames:
@@ -102,7 +106,7 @@ setup(name="Intellect",
       classifiers=CLASSIFIERS,
       keywords='intellect rules engine dsl policy',
       license='BSD, 4-clause license',
-      packages = packages,
-      package_data = {'': ['*.g', '*.tokens']},
+      packages=packages,
+      package_data={'': ['*.g', '*.tokens']},
       include_package_data=True,
       install_requires=['antlr_python_runtime>=3.1.3'])

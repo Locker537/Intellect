@@ -38,7 +38,11 @@ Initial Version: Feb 1, 2011
 @author: Michael Joseph Walsh
 """
 
-import inspect, os, sys, types, logging
+import os
+import sys
+import types
+import logging
+import inspect
 
 FUNCTION = "function"
 BUILTIN_FUNCTION = "built-in function"
@@ -47,6 +51,7 @@ CLASS_METHOD = classmethod
 STATIC_METHOD = staticmethod
 PROPERTY = property
 DATA = "data"
+
 
 def log(msg, name="intellect", level=logging.DEBUG):
     '''
@@ -61,7 +66,7 @@ def log(msg, name="intellect", level=logging.DEBUG):
 
     if level not in [logging.DEBUG, logging.INFO, logging.WARNING,
             logging.ERROR, logging.CRITICAL]:
-        raise ValueError, "'level' must be either logging.DEBUG, logging.INFO, logging.WARNING, logging.ERROR, logging.CRITICAL"
+        raise ValueError("'level' must be either logging.DEBUG, logging.INFO, logging.WARNING, logging.ERROR, logging.CRITICAL")
 
     logging.getLogger(name).log(level, "{0} :: {1}".format(__name__, msg))
 
@@ -310,14 +315,14 @@ def class_from_string(className, policy):
                 if importAsName.localName is not None and importAsName.localName == className:
                     # finding a match matching the localname for the className,
                     # hold the class's dottedName and identifier for later use
-                    matchedImportFrom = importFrom # used for raising PolicyException
+                    matchedImportFrom = importFrom  # used for raising PolicyException
                     dottedName = importFrom.dottedName
                     identifier = importAsName.identifier
                     break
                 elif importAsName.localName is None and importAsName.identifier == className:
                     # finding a match matching the localname for the className,
                     # hold the class's dottedName and identifier for later use
-                    matchedImportFrom = importFrom # used for raising PolicyException
+                    matchedImportFrom = importFrom  # used for raising PolicyException
                     dottedName = importFrom.dottedName
                     identifier = importAsName.identifier
                     break
@@ -376,13 +381,13 @@ def module_from_string(moduleName, policy):
                 if dottedAsName.localName is not None and dottedAsName.localName == moduleName:
                     # finding a match matching the localname for the moduleName,
                     # hold the module's dottedName for later use
-                    matchedImportName = importName # used for raising PolicyException
+                    matchedImportName = importName  # used for raising PolicyException
                     dottedName = dottedAsName.dottedName
                     break
                 elif dottedAsName.dottedName == moduleName:
                         # finding a matching identifier,
                         # hold the class's dottedName and identifier for later use
-                        matchedImportName = importName # used for raising PolicyException
+                        matchedImportName = importName  # used for raising PolicyException
                         dottedName = moduleName
                         break
 
@@ -411,6 +416,7 @@ def module_from_string(moduleName, policy):
 
             return module
 
+
 def module_from_str(name):
     '''
     Returns a Module object from dottedName.identifier str such as
@@ -420,6 +426,7 @@ def module_from_str(name):
 
     log("returning {0} for {1}".format(module, name))
     return module
+
 
 def class_from_str(name):
     '''
@@ -434,16 +441,17 @@ def class_from_str(name):
     log("returning {0} for {1}".format(klazz, name))
     return klazz
 
+
 def is_instance(instance, klazz):
     '''
     If the python interpreter is running a module as the main program,
     instances of the classes define in the same module will be instances
     of the scope (__main__) instead of what is expected.
-    
+
     So, more work is needed to determine if the instance is of type klazz
-    
+
     Returns True or False
-    
+
     Args:
         instance: An object instance to introspect
         klazz: a class object.

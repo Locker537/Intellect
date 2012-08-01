@@ -33,13 +33,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import logging
 import os
-import re
-import traceback
 import sys
 
-from antlr3 import FileStream, CommonTokenStream, ANTLRStringStream, \
-    RecognitionException
-
+from antlr3 import FileStream, CommonTokenStream, ANTLRStringStream
 from intellect.grammar.PolicyParser import PolicyParser
 from intellect.PolicyLexer import PolicyLexer
 from intellect.Node import Policy
@@ -47,7 +43,6 @@ from intellect.Node import File
 from intellect.PolicyTokenSource import PolicyTokenSource
 from intellect.Callable import Callable
 from intellect.IO import RedirectStdError
-
 
 
 class Intellect(object):
@@ -67,7 +62,6 @@ class Intellect(object):
         # as a single policy.
         self.policy = Policy()
 
-
     @property
     def knowledge(self):
         """
@@ -75,7 +69,6 @@ class Intellect(object):
             empty list.
         """
         return self._knowledge
-
 
     @knowledge.setter
     def knowledge(self, oneOrMoreObjects):
@@ -99,16 +92,13 @@ class Intellect(object):
         elif oneOrMoreObjects != []:
             self.knowledge.extend(oneOrMoreObjects)
 
-
     @property
     def policy(self):
         return self._policy
 
-
     @policy.setter
     def policy(self, value):
         self._policy = value
-
 
     def learn(self, identifier):
         '''
@@ -131,10 +121,9 @@ class Intellect(object):
                 self.knowledge.append(identifier)
                 self.log("Learned: {0}:{1}".format(type(identifier), identifier.__dict__))
             else:
-                raise ValueError, "{0}:{1} already exists in knowledge.".format(type(identifier), identifier.__dict__)
+                raise ValueError("{0}:{1} already exists in knowledge.".format(type(identifier), identifier.__dict__))
         else:
-            raise TypeError, "parameter 'identifier' cannot be a NoneType."
-
+            raise TypeError("parameter 'identifier' cannot be a NoneType.")
 
     def learn_policy(self, identifier):
         '''
@@ -167,9 +156,10 @@ class Intellect(object):
                     '''
                     try:
                         # Ensure we can read the file
-                        with open(identifier) as f: pass
+                        with open(identifier) as f:
+                            pass
                     except IOError:
-                        raise IOError, "Cannot read policy file from path: {0}".format(identifier)
+                        raise IOError("Cannot read policy file from path: {0}".format(identifier))
 
                     else:
                         self.log("Learning policy from file path: {0}".format(identifier))
@@ -248,7 +238,7 @@ class Intellect(object):
                 try:
                     # determine if the policy already exists in knowledge
                     self.policy.files.index(file_node)
-                    raise ValueError, "Policy already exists in knowledge: {0}".format(identifier)
+                    raise ValueError("Policy already exists in knowledge: {0}".format(identifier))
                 except:
                     pass
 
@@ -260,17 +250,15 @@ class Intellect(object):
                 return file_node
 
             else:
-                raise TypeError, "parameter 'identifier' must be a string, either a file path to a policy or the text of the policy itself"
+                raise TypeError("parameter 'identifier' must be a string, either a file path to a policy or the text of the policy itself")
         else:
-            raise TypeError, "parameter 'identifier' cannot be a NoneType."
-
+            raise TypeError("parameter 'identifier' cannot be a NoneType.")
 
     def learn_fact(self, identifier):
         '''
         Wrapper for 'learn' method
         '''
         self.learn(identifier)
-
 
     def forget(self, identifier):
         '''
@@ -302,7 +290,7 @@ class Intellect(object):
                         self.policy.files.remove(file)
                         return
                 # neither fact nor policy so raise an exception
-                raise ValueError, "fact with id: {0} is not in knowledge".format(identifier)
+                raise ValueError("fact with id: {0} is not in knowledge".format(identifier))
             elif isinstance(identifier, basestring):
                 # remove the policy file from knowledge
                 try:
@@ -312,23 +300,22 @@ class Intellect(object):
 
                     self.log("Forgetting policy loaded from file path : {0}".format(identifier))
                 except KeyError:
-                    raise ValueError, "policy for file path: {0} is not in knowledge".format(identifier)
+                    raise ValueError("policy for file path: {0} is not in knowledge".format(identifier))
             elif isinstance(identifier, File):
                 try:
                     index = self.policy.files.index(identifier)
                     self.policy.files.pop(index)
                     self.log("Forgetting policy loaded from file path : {0}".format(identifier.path))
                 except:
-                    raise ValueError, "policy: {0} not in knowledge".format(identifier.path)
+                    raise ValueError("policy: {0} not in knowledge".format(identifier.path))
             else:
                 try:
                     self.knowledge.remove(identifier)
                     self.log("Forgetting fact: {0}".format(identifier))
                 except:
-                    raise ValueError, "fact: {0} is not in knowledge".format(identifier)
+                    raise ValueError("fact: {0} is not in knowledge".format(identifier))
         else:
-            raise TypeError, "parameter 'identifier' cannot be a NoneType."
-
+            raise TypeError("parameter 'identifier' cannot be a NoneType.")
 
     def forget_fact(self, identifier):
         '''
@@ -341,7 +328,6 @@ class Intellect(object):
             See forget-method 'raises'.
         '''
         self.forget(identifier)
-
 
     def forget_policy(self, identifier):
         '''
@@ -359,8 +345,7 @@ class Intellect(object):
         if isinstance(identifier, (basestring, File)):
             self.forget(identifier)
         else:
-            raise TypeError, "parameter 'identifier': {0} was neither a path to the policy to forget, or a Policy object.".format(identifier)
-
+            raise TypeError("parameter 'identifier': {0} was neither a path to the policy to forget, or a Policy object.".format(identifier))
 
     def forget_all(self):
         '''
@@ -370,7 +355,6 @@ class Intellect(object):
         self.policy = Policy()
 
         self.log("forgot all")
-
 
     def reason(self, agenda=None):
         '''
@@ -417,7 +401,6 @@ class Intellect(object):
         # eval the policy using the described agenda
         self.policy.eval(agenda)
 
-
     @Callable
     def log(self, msg, name="intellect", level=logging.DEBUG):
         '''
@@ -437,6 +420,6 @@ class Intellect(object):
 
         if level not in [logging.DEBUG, logging.INFO, logging.WARNING,
                 logging.ERROR, logging.CRITICAL]:
-            raise ValueError, "A value of '{0}' for 'level' is invalid, must be either logging.DEBUG, logging.INFO, logging.WARNING, logging.ERROR, logging.CRITICAL".format(level)
+            raise ValueError("A value of '{0}' for 'level' is invalid, must be either logging.DEBUG, logging.INFO, logging.WARNING, logging.ERROR, logging.CRITICAL".format(level))
 
         logging.getLogger(name).log(level, "{0}.{1} :: {2}".format(self.__class__.__module__, self.__class__.__name__, msg))

@@ -101,7 +101,7 @@ class PolicyTokenSource(TokenSource):
     def nextToken(self):
         """
             From http://www.python.org/doc/2.2.3/ref/indentation.html
-    
+
          Before the first line of the file is read, a single zero is
          pushed on the stack; this will never be popped off again. The
          numbers pushed on the stack will always be strictly increasing
@@ -115,9 +115,9 @@ class PolicyTokenSource(TokenSource):
          generated. At the end of the file, a DEDENT token is generated
          for each number remaining on the stack that is larger than
          zero.
-    
+
             I use char position in line 0..n-1 instead.
-    
+
             The DEDENTS possibly needed at EOF are gracefully handled by forcing
             EOF to have char pos 0 even though with UNIX it's hard to get EOF
             at a non left edge.
