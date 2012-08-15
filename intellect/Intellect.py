@@ -33,6 +33,7 @@ import sys
 import urllib
 import urllib2
 import os
+import errno
 
 from urlparse import urlparse
 
@@ -111,7 +112,7 @@ class Intellect(object):
     def policy(self, value):
         '''
         Setter for the intellect Policy object
-        
+
         Args:
             value: a Policy object
         '''
@@ -123,15 +124,33 @@ class Intellect(object):
         '''
         Helper/Utility method to take file system paths and return a file URI for use
         with learn, and learn_policy methods
-        
+
         Args:
             file_path: The file path to the policy
-            
+
         Returns:
             an equivalent file URI
         '''
+        if os.path.isfile(file_path):
+            try:
+                with open(file_path):
+                    pass
 
-        return "file://" + urllib.pathname2url(os.path.abspath(file_path))
+            except IOError:
+                # Permission denied, cannot read file.
+                raise IOError((errno.EACCES, "Cannot open and read rules file.", file_path))
+
+        else:
+            # Cannot find file.
+            raise IOError((errno.ENOENT, "Cannot find rules file.", file_path))
+
+        full_path = urllib.pathname2url(os.path.abspath(file_path))
+        if file_path.startswith("file://"):
+            return full_path
+
+        else:
+            return "file://" + full_path
+
 
 
     @staticmethod
@@ -140,10 +159,10 @@ class Intellect(object):
         Helper/Utility method to retrieve a policy from a URL
 
         Uses proxies from environment.
-        
+
         Args:
             urlstring: The URL to the policy file.
-        
+
         Returns:
             The text of the policy.
         '''
@@ -224,7 +243,7 @@ class Intellect(object):
 
                 with RedirectStdError() as stderr:
                     try:
-                        # ANTL3 may raise an exception, and doing so the stderror 
+                        # ANTL3 may raise an exception, and doing so the stderror
                         # will not be printed hiding the underlying problem.  GRRR!!!!
                         file_node = parser.file()
                     except Exception as e:
